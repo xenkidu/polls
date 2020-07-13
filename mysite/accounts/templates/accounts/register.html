@@ -1,12 +1,12 @@
 {% extends "polls/base.html" %}
-
+{% load crispy_forms_tags %}
 
 {% block content %}
 <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">
         <legend class="border-bottom mb-4">Join</legend>
-        {{ form.as_p }}
+        {{ form|crispy }}
     </fieldset>
     <div class="form-group">
         <button class="btn btn-outline-info" type="submit">Sign Up</button>
