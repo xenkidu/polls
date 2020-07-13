@@ -14,11 +14,19 @@
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-primary mb-3">
         <a href="/polls/"><span class="navbar-brand mb-0 h1">Polls</span></a>
+        <a href="/accounts/"><span class="navbar-brand mb-0 h1">Register</span></a>
     </nav>
 
     <div class="row ">
         <div class="col-10 offset-md-1">
-            {% block content %}{% endblock %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          {% block content %}{% endblock %}
         </div>
     </div>
 
