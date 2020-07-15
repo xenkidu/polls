@@ -1,6 +1,18 @@
 {% extends "polls/base.html" %}
-{% load crispy_forms_tags %}
 
 {% block content %}
-<h2>{{ user.username }}</h2>
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <img class="card-img-top rounded-circle" src="{{ user.profile.image.url }}" alt="Card image cap">
+            <div class="card-body">
+                <div class="card-text">
+                    <h5 class="card-title text-primary text-center">
+                        {{ user.username }}
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div><!-- end row -->
 {% endblock %}
