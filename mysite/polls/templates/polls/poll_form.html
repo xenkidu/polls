@@ -1,0 +1,31 @@
+{% extends 'polls/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title text-primary">
+                    {{ question.question_text }}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="card-text">
+                    <form action="{% url 'polls:add' %}" method="post">
+                        {% csrf_token %}
+                        {{ q_form|crispy }}
+                        {{ c_form|crispy }}
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">Vote</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card-footer">
+              <a href="{% url 'polls:home'%}">View Polls</a>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div><!-- end row -->
+{% endblock %}
