@@ -4,23 +4,34 @@
 {% if latest_question_list %}
     <div class="row mb-2">
         {% for question in latest_question_list %}
-            <div class="col-md-6">
-                <div class="card" style="height: 300px">
-                  <div class="card-body">
-                    <h5 class="card-title text-primary">
-                        {{ question.question_text }}
-                    </h5>
+            <div class="col-sm-6 mb-3">
+                <div class="card" style="min-height: 350px">
+                    <div class="card-header">
+                        <h5 class="card-title text-primary text-center mb-0">
+                            <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+                        </h5>
+                    </div>
+                    <div class="card-body pt-0">
+                    <div class="border-bottom pb-2">
+                        <small class="text-muted">
+                            Asked by <strong>{{ question.author }}</strong> on {{ question.pub_date }}
+                        </small>
+                        <div>
+                          <img class="img-fluid rounded" style="max-width:25%; height=auto" src="{{ question.author.profile.image.url }}">
+                      </div>
+                    </div>
+
                     <div class="card-text">
                         <ul>
                             {% for choice in question.choice_set.all %}
-                                <li>{{ choice.choice_text }}: {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+                            <li><strong>{{ choice.choice_text }}</strong>: {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
                             {% endfor %}
                         </ul>
                     </div>
                   </div>
 
                   <div class="card-footer">
-                      <a href="{% url 'polls:vote' question.id %}" class="btn btn-primary">Vote</a>
+                      <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary ml-auto">Go to Vote</a>
                   </div>
                 </div>
             </div> <! -- end col -->

@@ -2,5 +2,35 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h2>{{ user.username }}</h2>
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+
+            <div class="card-body">
+                <div class="card-text">
+                    <h5 class="card-title text-primary text-center">
+                        {{ user.username }}
+                    </h5>
+                    <img class="rounded-circle mx-auto d-block" src="{{ user.profile.image.url }}">
+                </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4 text-center">Update Your Profile</legend>
+                    {{ u_form|crispy }}
+                    {{ p_form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Update</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div> <!-- end col -->
+    <div class="row">
+        <div class="col-md-8 col-offset-2">
+        </div>
+    </div>
+</div><!-- end row -->
 {% endblock %}
