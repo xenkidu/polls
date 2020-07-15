@@ -126,5 +126,6 @@ STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'polls:index'
+LOGIN_REDIRECT_URL = 'polls:home'
+
 LOGIN_URL = 'accounts:login'
