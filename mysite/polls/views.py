@@ -17,7 +17,7 @@ class IndexView(generic.ListView):
         return Question.objects.order_by('-pub_date')[:5]
 
 
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
