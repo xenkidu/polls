@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 
 from .forms import UserRegisterForm, ProfileUpdateForm, UserUpdateForm
 
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -19,11 +20,14 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'accounts/register.html', {'form': form})
 
+
 class login_view(views.LoginView):
     template_name = 'accounts/login.html'
 
+
 class logout_view(views.LogoutView):
     template_name = 'accounts/logout.html'
+
 
 @method_decorator(login_required, name='dispatch')
 class profile_view(views.TemplateView):

@@ -5,18 +5,19 @@
 <div class="row mt-4">
     <div class="col-md-8 offset-md-2">
         <div class="card">
-            <img class="card-img-top rounded-circle" src="{{ user.profile.image.url }}" alt="Card image cap">
+
             <div class="card-body">
                 <div class="card-text">
                     <h5 class="card-title text-primary text-center">
                         {{ user.username }}
                     </h5>
+                    <img class="rounded-circle mx-auto d-block" src="{{ user.profile.image.url }}">
                 </div>
 
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Update Your Profile</legend>
+                    <legend class="border-bottom mb-4 text-center">Update Your Profile</legend>
                     {{ u_form|crispy }}
                     {{ p_form|crispy }}
                 </fieldset>
