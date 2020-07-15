@@ -5,16 +5,18 @@
     <div class="col-md-8 offset-md-2">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title text-primary text-center">
-                    {{ question.question_text }}
-                </h5>
+                    <h5 class="card-title text-primary mb-0">
+                        <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+                    </h5>
+                    <small class="text-muted">
+                        Asked by <strong>{{ question.author }}</strong> on {{ question.pub_date }}
+                    </small>
             </div>
             <div class="card-body">
                 <div class="card-text">
-                    <h5 class="text-center text-info">Results</h5>
                     <ul>
                         {% for choice in question.choice_set.all %}
-                            <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+                            <li><strong>{{ choice.choice_text }}</strong>: {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
                         {% endfor %}
                     </ul>
                 </div>

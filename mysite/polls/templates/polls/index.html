@@ -4,17 +4,23 @@
 {% if latest_question_list %}
     <div class="row mb-2">
         {% for question in latest_question_list %}
-            <div class="col-md-6">
-                <div class="card" style="height: 300px">
-                  <div class="card-body">
-                    <h5 class="card-title text-primary mb-0">
-                        <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
-                    </h5>
-                    <div class="border-bottom pb-1">
-                        <small class="text-muted">
-                            Asked by {{ question.author }}: {{ question.pub_date }}
-                        </small>
+            <div class="col-sm-6 mb-3">
+                <div class="card" style="min-height: 350px">
+                    <div class="card-header">
+                        <h5 class="card-title text-primary text-center mb-0">
+                            <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+                        </h5>
                     </div>
+                    <div class="card-body pt-0">
+                    <div class="border-bottom pb-2">
+                        <small class="text-muted">
+                            Asked by <strong>{{ question.author }}</strong> on {{ question.pub_date }}
+                        </small>
+                        <div>
+                          <img class="img-fluid rounded" style="max-width:25%; height=auto" src="{{ question.author.profile.image.url }}">
+                      </div>
+                    </div>
+
                     <div class="card-text">
                         <ul>
                             {% for choice in question.choice_set.all %}
