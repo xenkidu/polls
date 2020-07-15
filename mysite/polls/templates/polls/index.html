@@ -1,15 +1,36 @@
 {% extends "polls/base.html" %}
-
-
 {% block content %}
-<h1>The Polling Station</h1>
+<h1 class="text-center">The Polling Station</h1>
 {% if latest_question_list %}
-<ul>
-    {% for question in latest_question_list %}
-        <li><h3><a href="{% url 'polls:results' question.id %}">{{ question.question_text }}</a></h3></li>
-    {% endfor %}
-</ul>
+    <div class="row mb-2">
+        {% for question in latest_question_list %}
+            <div class="col-md-6">
+                <div class="card" style="height: 300px">
+                  <div class="card-body">
+                    <h5 class="card-title text-primary">
+                        {{ question.question_text }}
+                    </h5>
+                    <div class="card-text">
+                        <ul>
+                            {% for choice in question.choice_set.all %}
+                                <li>{{ choice.choice_text }}: {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                  </div>
+
+                  <div class="card-footer">
+                      <a href="{% url 'polls:vote' question.id %}" class="btn btn-primary">Vote</a>
+                  </div>
+                </div>
+            </div> <! -- end col -->
+        {% if forloop.counter|divisibleby:"2" %}
+        </div>
+        <div class="row mb-2">
+        {% endif %}
+        {% endfor %}
+    </div> <! -- end row -->
 {% else %}
-<p>No polls are available.</p>
+    <p>No polls are available.</p>
 {% endif %}
-{% endblock %}
+{% endblock content%}
