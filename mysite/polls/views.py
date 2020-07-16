@@ -16,13 +16,12 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last five published questions."""
-        return Question.objects.order_by('-pub_date')[:5]
+        return Question.objects.order_by('-pub_date')[:10]
 
 
 # @method_decorator(login_required, name='dispatch')
 class DetailView(generic.DetailView):
     model = Question
-    template_name = 'polls/detail.html'
 
 
 class ResultsView(generic.DetailView):
@@ -30,17 +29,18 @@ class ResultsView(generic.DetailView):
     template_name = 'polls/results.html'
 
 @method_decorator(login_required, name='dispatch')
-class AddPollView(generic.CreateView):
-    template_name = 'polls/poll_form.html'
+class PollCreateView(generic.CreateView):
+    template_name = 'polls/question_form.html'
+    number_of_choices = 3
 
     def get(self, request, *args, **kwargs):
         q_form = QuestionForm(instance=Question())
-        c_forms = [ChoiceForm(prefix=str(x), instance=Choice()) for x in range(4)]
+        c_forms = [ChoiceForm(prefix=str(x), instance=Choice()) for x in range(self.number_of_choices)]
         return render(request, self.template_name, {'q_form': q_form, 'c_forms': c_forms})
 
     def post(self, request):
         q_form = QuestionForm(request.POST, instance=Question())
-        c_forms = [ChoiceForm(request.POST, prefix=str(x), instance=Choice()) for x in range(4)]
+        c_forms = [ChoiceForm(request.POST, prefix=str(x), instance=Choice()) for x in range(self.number_of_choices)]
         if q_form.is_valid() and all([cf.is_valid() for cf in c_forms]):
             question = q_form.save(commit=False)
             question.author = request.user
@@ -52,7 +52,7 @@ class AddPollView(generic.CreateView):
                 choice.save()
 
             messages.success(request, f'Poll Added!')
-            return redirect('polls:home')
+            return redirect('polls:detail', question.pk)
         return render(request, self.template_name, {'q_form': q_form, 'c_forms': c_forms})
 
 
@@ -61,7 +61,7 @@ def vote_view(request, question_id):
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
-        return render(request, 'polls/detail.html', {
+        return render(request, 'polls/question_detail.html', {
             'question': question,
             'error_message': "You didn't select a choice.",
         })
