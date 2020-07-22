@@ -2,15 +2,20 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
-from django.views import generic
+from django.views.generic import (
+        ListView, 
+        DetailView, 
+        CreateView, 
+        FormView
+        )
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from .models import Question, Choice
-from .forms import QuestionForm, ChoiceForm
+from .models import Question, Choice, Comment
+from .forms import QuestionForm, ChoiceForm, CommentForm
 
 
-class IndexView(generic.ListView):
+class IndexView(ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
 
@@ -20,16 +25,38 @@ class IndexView(generic.ListView):
 
 
 # @method_decorator(login_required, name='dispatch')
-class DetailView(generic.DetailView):
+class DetailView(DetailView):
     model = Question
 
 
-class ResultsView(generic.DetailView):
+class ResultsView(DetailView):
     model = Question
     template_name = 'polls/results.html'
+    form_class = CommentForm
+
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a CommentForm
+        form = self.form_class()
+        context['form'] = form
+        return context
+
+    def post(self, request, *args, **kwargs):
+        comment_form = CommentForm(request.POST, instance=Comment())
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.question = Question.objects.get(id=kwargs['pk'])
+            comment.author = request.user
+            comment.save()
+            messages.success(request, f'Comment Added!')
+            return redirect('polls:results', kwargs['pk'])
+        return render(request, self.template_name)
+
 
 @method_decorator(login_required, name='dispatch')
-class PollCreateView(generic.CreateView):
+class PollCreateView(CreateView):
     template_name = 'polls/question_form.html'
     number_of_choices = 3
 

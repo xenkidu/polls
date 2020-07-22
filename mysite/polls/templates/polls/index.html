@@ -8,7 +8,7 @@
                 <div class="card" style="min-height: 350px">
                     <div class="card-header">
                         <h5 class="card-title text-primary text-center mb-0">
-                            <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+                            <a href="{% url 'polls:results' question.id %}">{{ question.question_text }}</a>
                         </h5>
                     </div>
                     <div class="card-body pt-0">
@@ -30,8 +30,12 @@
                     </div>
                   </div>
 
-                  <div class="card-footer">
-                      <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary ml-auto">Go to Vote</a>
+                  <div class="card-footer text-center">
+                      {% if user.is_authenticated %}
+                      <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary btn-lg btn-block">Vote</a>
+                      {% else %}
+                      <a href="{% url 'accounts:register' %}" class="text-primary">Register to Vote</a>
+                      {% endif %}
                   </div>
                 </div>
             </div> <! -- end col -->

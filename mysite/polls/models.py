@@ -20,6 +20,19 @@ class Question(models.Model):
     def get_absolute_url(self):
         return reverse('polls:detail', kwargs={'pk': self.pk})
 
+class Comment(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_text = models.CharField(max_length=400)
+    thumbs_up = models.IntegerField(default=0)
+    thumps_down = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.comment_text
+
+    def get_absolute_url(self):
+        return reverse('polls:results', kwargs={'pk': self.question.pk})
+
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
